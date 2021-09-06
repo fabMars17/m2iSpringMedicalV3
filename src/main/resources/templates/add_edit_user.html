@@ -1,0 +1,46 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Ajout / Edition Patient</title>
+    <link rel="stylesheet" href="/style-interne.css">
+</head>
+
+<body>
+<h1>Formulaire <span th:text="${action}"></span> Patient</h1>
+<hr>
+<form name="patientForm" action="" method="post">
+    <div>
+        <label>Nom : </label>
+        <input th:value="${u.name}" type="text" name="nom">
+    </div>
+
+    <div>
+        <label>Email : </label>
+        <input th:value="${u.email}" type="email" name="mail">
+    </div>
+
+    <div>
+        <label>Role : </label>
+        <!--<select name="role" required>
+            <option>ROLE_ADMIN</option>
+            <option>ROLE_USER</option>
+        </select>-->
+        <input th:checked="${!as_admin}" type="radio" id="user" name="role" value="ROLE_USER">
+        <label for="user">Utilisateur</label>
+        <input th:checked="${as_admin}" type="radio" id="admin" name="role" value="ROLE_ADMIN">
+        <label for="admin">Administrateur</label>
+        <!--<input th:value="${u.roles}" type="text" name="role">-->
+    </div>
+
+    <div>
+        <label>Pass : </label>
+        <input type="password" name="pass">
+    </div>
+    <!--<div>
+        <label>Last reset : </label>
+        <input th:value="${u.userResetpassdate}" type="passreset" name="passreset">
+    </div>-->
+
+    <input type="submit" value="Valider">
+</form>
+</body>
+</html>

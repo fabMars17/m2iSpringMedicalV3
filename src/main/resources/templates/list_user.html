@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My First Page</title>
+
+        <!--<link rel="stylesheet" href="/hf.css">-->
+
+        <style type="text/css" charset="utf-8">
+
+            html, body, canvas {
+                /*width: 100%;
+                height: 100%;*/
+                padding: 0;
+                margin: 0;
+                /*overflow: hidden;*/
+
+            }
+
+            body {
+                font-family: Arial;
+                /*font-family: ubuntu, helvetica, arial;*/
+                /*background-color:#f2f6f9;*/
+                /*background: black;*/
+            }
+
+            #nomenclature  li {
+                background-color: bisque;
+            }
+
+            ul li {
+                width: 90%;
+                background-color: #c7621e;
+                display: flex;
+                /*justify-content: space-around;*/
+                margin-bottom: 20px;
+                padding: 10px;
+            }
+
+            ul li span:first-child{
+                width: 4%;
+            }
+
+            ul li span:last-child {/* remove flex on ul li to works*/
+                float: right;
+                width: 0;
+                width: auto;
+            }
+
+            ul li span{
+                width: 24%;
+            }
+
+            ul li form button{
+                background-color: cornflowerblue;
+                /*width: 24%;*/
+                height: auto;
+            }
+
+            ul li form:hover>button{
+                background-color: aquamarine;
+                /*width: 24%;*/
+            }
+
+            table {
+                border-collapse: collapse;
+                /*border: 2px solid rgb(10, 10, 10);*/
+                letter-spacing: 1px;
+                font-family: sans-serif;
+                font-size: .9rem;
+                position: relative;
+                margin-left: auto;
+                margin-right: auto;
+                width: 340px;
+                background-color: #d49010;
+                border-radius: 10px;
+            }
+
+            td {
+                /*border: 1px solid rgb(250, 50, 100);*/
+                padding: 10px 4px;
+                color: aliceblue;
+                text-align: center;
+            }
+
+            input {
+                color: rgb(15, 17, 19);
+                border: none;
+                border-radius: 3px;
+                height: 30px;
+                width: 90%;
+            }
+
+            input:focus {
+                border: none;
+                outline: none;
+            }
+
+            input::placeholder {
+                color: rgb(143, 178, 200);
+            }
+
+            #valide input {
+                border: none;
+                border-radius: 5px;
+                width: 95%;
+                background: #a84a0a;
+                color: aliceblue;
+            }
+
+            #valide input:hover {
+                cursor: pointer;
+                background: #c7621e;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+    <header th:replace="fragments/header.html :: headerfrag"></header>
+    <h1>Liste des utilisateurs</h1>
+    <form th:action="@{'/user/add'}">
+        <button type="submit">Ajouter</button>
+    </form>
+    <ul id="nomenclature">
+        <li >
+            <span text="Id">Id</span>
+            <span text="Ville">Nom</span>
+            <span text="Code Postal">E-mail</span>
+            <span>Role</span>
+            <span>Dernier RAZ</span>
+        </li>
+    </ul>
+        <ul>
+            <li th:each="user : ${lu} ">
+                <span th:text="${user.id}"></span>
+                <span th:text="${user.name}"></span>
+                <span th:text="${user.email}"></span>
+                <span th:text="${user.roles}"></span>
+                <!--<span th:text="${user.password}"></span>-->
+                <span th:text="${user.userResetpassdate}"></span>
+                <form th:action="@{'/user/edit/{id}'(id=${user.id})}">
+                    <button type="submit">Modifier</button>
+                </form>
+                <!--<form action="#" th:action="@{'/user/delete/{id}'(id=${ville.id})}" >
+                    <button type="submit" class="btn">
+                        Delete
+                    </button>
+                </form>-->
+            </li>
+        </ul>
+    </body>
+</html>

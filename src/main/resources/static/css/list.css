@@ -1,0 +1,33 @@
+.liste-patient li {
+    width: 90%;
+    background-color: #c7621e;
+    display: flex;
+    /*justify-content: space-around;*/
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.liste-patient li span:first-child{
+    width: 4%;
+}
+
+.liste-patient li span:last-child {/* remove flex on ul li to works*/
+    float: right;
+    width: 0;
+    width: auto;
+}
+
+.liste-patient li span{
+    width: 24%;
+}
+
+.liste-patient li form button{
+    background-color: cornflowerblue;
+    /*width: 24%;*/
+    height: auto;
+}
+
+.liste-patient li form:hover>button{
+    background-color: aquamarine;
+    /*width: 24%;*/
+}

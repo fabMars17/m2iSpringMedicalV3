@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My First Page</title>
+
+        <link rel="stylesheet" href="css/list.css">
+
+
+    </head>
+
+    <body>
+
+    <header th:replace="fragments/header.html :: headerfrag"></header>
+
+    <h1>Liste des patients</h1>
+    <form th:action="@{'/patient/add'}">
+        <button type="submit">Ajouter</button>
+    </form>
+    <form th:action="@{'/logout'}">
+        <button type="submit">Deconnection</button>
+    </form >
+        <ul class="liste-patient" th:fragment="content1">
+            <li th:each="patient : ${lp} ">
+                <span th:text="${patient.id}"></span>
+                <span th:text="${patient.nom}"></span>
+                <span th:text="${patient.prenom}"></span>
+                <span th:text="${patient.email}"></span>
+                <span th:text="${patient.telephone}"></span>
+                <!-- Must check if patient.ville is not null --- the two next are equivalent-->
+                <td th:utext="${patient.ville} ? ${patient.ville.nom}:'Pas de ville'"></td>
+                <!--<td th:utext="${patient.ville?.nom}"></td>-->
+                <form th:action="@{'/patient/edit/{id}'(id=${patient.id})}">
+                    <button type="submit">Modifier</button>
+                </form>
+                <form action="#" th:action="@{'/patient/delete/{id}'(id=${patient.id})}" >
+                    <button type="submit" class="btn">
+                        Delete
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </body>
+</html>
