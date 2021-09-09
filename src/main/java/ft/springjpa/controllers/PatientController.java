@@ -5,6 +5,8 @@ import ft.springjpa.repositories.PatientRepository;
 import ft.springjpa.repositories.VilleRepository;
 import ft.springjpa.entities.Patient;
 import ft.springjpa.entities.Ville;
+import ft.springjpa.services.PatientService;
+import ft.springjpa.services.VilleService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +20,15 @@ import java.util.Optional;
 @RequestMapping("/patient")
 public class PatientController {
 
-    private final PatientRepository pr;
-    private final VilleRepository vr;
+    //private final PatientRepository pr;
+    //private final VilleRepository vr;
 
-    public PatientController(PatientRepository pr, VilleRepository vr) {
-        this.pr = pr;
-        this.vr = vr;
+    private final PatientService ps;
+    private final VilleService vs;
+
+    public PatientController(PatientService ps, VilleService vs) {
+        this.ps = ps;
+        this.vs = vs;
     }
 
     @GetMapping("/dash")
@@ -37,12 +42,11 @@ public class PatientController {
         return "/fragments/header.html";
     }
 
-    @Secured("ROLE_USER")
+    //@Secured("ROLE_ADMIN")
     @GetMapping("/list")
     public String list(Model m){
-        m.addAttribute("lp",pr.findAll());
-        m.addAttribute("lv", vr.findAll());
-
+        m.addAttribute("lp", ps.getList());
+        m.addAttribute("lv", vs.getList());
         return "list.html";
     }
 
@@ -50,8 +54,9 @@ public class PatientController {
     public String addGet( Model model ){
         model.addAttribute("p" , new Patient());
         model.addAttribute("action", "ajout");
-        List<Ville> lv = (List<Ville>) vr.findAll();
-        model.addAttribute( "lv" , lv );
+        model.addAttribute( "lv" , vs.getList() );
+        //List<Ville> lv = (List<Ville>) vr.findAll();
+        //model.addAttribute( "lv" , lv );
         return "add_edit.html";
     }
 
@@ -65,7 +70,7 @@ public class PatientController {
         String ville = request.getParameter("ville");
 
         try{
-            Patient p = new Patient();
+            /*Patient p = new Patient();
             p.setNom(nom);
             p.setPrenom(prenom);
             p.setEmail(email);
@@ -76,65 +81,59 @@ public class PatientController {
             p.setVille( villeP );
             //p.setVille( ville  );
 
-            pr.save( p );
+            pr.save( p );*/
+
+            ps.addPatient(nom, prenom, email, telephone, Integer.parseInt(ville));
 
         }catch( Exception e ){
 
         }
         return "redirect:/patient/list";
     }
+
     //$ pour afficher le messge qui suit
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable String id, Model model){
-        List<Ville> lv = (List<Ville>) vr.findAll();
-        model.addAttribute( "lv" , lv );
-
-        Optional<Patient> p;
-        p=pr.findById(Integer.parseInt(id));
-        model.addAttribute("p", p.get());
-        //model.addAttribute( "action" , "mise à jour" );
-        return "/add_edit";
+        try{
+            //model.addAttribute( "actionP" , "maj patient" );
+            model.addAttribute( "lv" , vs.getList() );
+            model.addAttribute("p", ps.find(Integer.parseInt(id)));
+            return "/add_edit";
+        }catch ( Exception e ){
+            return "redirect:/patient?error="+e.getMessage();
+        }
     }
 
     // Update
     @PostMapping("/edit/{id}")
     public String editPost(@PathVariable String id, HttpServletRequest request) {
-        List<Ville> lv = (List<Ville>) vr.findAll();
-
-        Patient p;
-        //Optional<Patient> p;
-        p=pr.findById(Integer.parseInt(id)).get();
-
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        String telephone = request.getParameter("telephone");
-        String email = request.getParameter("mail");
-        String ville = request.getParameter("ville");
 
         try{
+            String nom = request.getParameter("nom");
+            String prenom = request.getParameter("prenom");
+            String telephone = request.getParameter("telephone");
+            String email = request.getParameter("mail");
+            String ville = request.getParameter("ville");
 
-            p.setNom(nom);
-            p.setPrenom(prenom);
-            p.setEmail(email);
-            p.setTelephone(telephone);
-
-            Ville villeP = new Ville();
-            villeP.setId( Integer.parseInt(  ville ) );
-            p.setVille( villeP );
-            //p.setVille( ville  );
-
-            pr.save( p );
-
+            ps.editPatient(Integer.parseInt(id), nom, prenom, email, telephone, Integer.parseInt(ville));
+            return "redirect:/patient/list";
         }catch( Exception e ){
-
+            return "patient/add_edit";
         }
-        return "redirect:/patient/list";
+
     }
 
     // Delete
     @RequestMapping("/delete/{id}")
-    public String deletePatient(@PathVariable String id) {
-        pr.deleteById(Integer.parseInt(id));
-        return "redirect:/patient/list";
+    public String deletePatient(@PathVariable int id) {
+        try{
+            ps.delete(id);
+            //return "redirect:/patient?success";
+            return "redirect:/patient/list";
+        }catch( Exception e ){
+            return "patient?error="+e.getMessage();
+        }
+        //pr.deleteById(Integer.parseInt(id));
+
     }
 }

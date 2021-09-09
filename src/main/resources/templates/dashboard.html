@@ -481,8 +481,10 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         <h3>Bienvenue : </h3>
         <!--https://stackoverflow.com/questions/35090329/how-to-display-current-logged-in-users-information-in-all-templates-including-v
         add the function getLogname in UserDetailsImpl class -->
-        <span th:text ="${#authentication.getPrincipal().getLogname()}"></span>
+        <!--<span th:text ="${#authentication.getPrincipal().getLogname()}"></span>-->
+        <span th:text ="${#authentication.getPrincipal().getUser().getName()}"></span>
         <span th:text ="${#authentication.getPrincipal().getLogRole()}"></span>
+
         <div id="ico-user" th:text="${#authentication.name}">
             <label class="demo" onmouseup="focusIn(event)">
                 <i class="icono-user"></i>

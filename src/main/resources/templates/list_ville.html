@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -132,7 +135,7 @@
         <button type="submit">Ajouter</button>
     </form>
     <ul id="nomenclature">
-        <li >
+        <li>
             <span text="Id">Id</span>
             <span text="Ville">Ville</span>
             <span text="Code Postal">Code Postal</span>
@@ -142,11 +145,11 @@
             <li th:each="ville : ${lv} ">
                 <span th:text="${ville.id}"></span>
                 <span th:text="${ville.nom}"></span>
-                <span th:text="${ville.codepostal}"></span>
+                <span sec:authorize="hasRole('ROLE_ADMIN')" th:text="${ville.codepostal}"></span>
                 <form th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
                     <button type="submit">Modifier</button>
                 </form>
-                <form action="#" th:action="@{'/ville/delete/{id}'(id=${ville.id})}" >
+                <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/delete/{id}'(id=${ville.id})}" >
                     <button type="submit" class="btn">
                         Delete
                     </button>

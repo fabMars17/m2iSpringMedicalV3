@@ -10,6 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+/*
+*   @author
+*   @param
+*
+*
+* */
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -24,6 +30,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getLogRole() {
         return user.getRoles();
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override

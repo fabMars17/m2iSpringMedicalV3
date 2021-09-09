@@ -4,6 +4,7 @@ package ft.springjpa.controllers;
 import ft.springjpa.repositories.PatientRepository;
 import ft.springjpa.repositories.UserRepository;
 import ft.springjpa.repositories.VilleRepository;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,12 @@ public class ContentController {
         return "website";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("content1")
     public String getContent1(Model m) {
         m.addAttribute("lp",pr.findAll());
         m.addAttribute("lv", vr.findAll());
-        m.addAttribute("user",ur.findAll());
+        //m.addAttribute("user",ur.findAll());
         return "/fragments/listpart.html :: content1";
         //return "/fragments/listpart.html";
     }

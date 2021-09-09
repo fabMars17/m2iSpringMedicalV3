@@ -5,6 +5,10 @@ import ft.springjpa.entities.User;
 import ft.springjpa.entities.Ville;
 import ft.springjpa.repositories.UserRepository;
 import ft.springjpa.repositories.VilleRepository;
+import ft.springjpa.services.PatientService;
+import ft.springjpa.services.VilleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +23,16 @@ import java.util.Optional;
 @RequestMapping("/ville")
 public class VilleController {
 
-    private final VilleRepository vr;
+    @Autowired
+    private final VilleService vs;
 
-    public VilleController(VilleRepository vr) {
-        this.vr = vr;
+    public VilleController(VilleService vs) {
+        this.vs = vs;
     }
 
     @GetMapping("/list")
     public String list(Model m){
-        m.addAttribute("lv",vr.findAll());
+        m.addAttribute("lv",vs.getList());
         return "list_ville.html";
     }
 
@@ -38,31 +43,21 @@ public class VilleController {
         return "add_edit_ville.html";
     }
 
-    //Update add new patient
+    //Update add new ville
     @PostMapping("/add")
     public String addPost( HttpServletRequest request ){
         String nom = request.getParameter("nom");
         String cp = request.getParameter("codepostal");
 
-        try{
-            Ville v = new Ville();
-            v.setNom(nom);
-            v.setCodepostal(Integer.parseInt(cp));
+        vs.addVille(nom,cp);
 
-            vr.save( v );
-
-        }catch( Exception e ){
-
-        }
         return "redirect:/ville/list";
     }
     //$ pour afficher le messge qui suit
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable String id, Model model){
 
-        Optional<Ville> v;
-        v=vr.findById(Integer.parseInt(id));
-        model.addAttribute("v", v.get());
+        model.addAttribute("v", vs.getVille(id));
         //model.addAttribute( "action" , "mise à jour" );
         return "/add_edit_ville";
     }
@@ -71,30 +66,25 @@ public class VilleController {
     @PostMapping("/edit/{id}")
     public String editPost(@PathVariable String id, HttpServletRequest request) {
 
-        Ville v;
-        //Optional<Patient> p;
-        v=vr.findById(Integer.parseInt(id)).get();
-
         String nom = request.getParameter("nom");
         String cp = request.getParameter("codepostal");
 
-        try{
+        vs.updateVille(nom, cp, id);
 
-            v.setNom(nom);
-            v.setCodepostal(Integer.parseInt(cp));
-
-            vr.save( v );
-
-        }catch( Exception e ){
-
-        }
         return "redirect:/ville/list";
     }
 
     // Delete
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/delete/{id}")
     public String deletePatient(@PathVariable String id) {
-        vr.deleteById(Integer.parseInt(id));
+        try {
+            vs.deleteVille(id);
+        }
+        catch( Exception e ){
+            System.out.println(e.getMessage());
+        }
+
         return "redirect:/ville/list";
     }
 }
