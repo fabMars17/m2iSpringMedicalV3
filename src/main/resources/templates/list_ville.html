@@ -1,140 +1,39 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My First Page</title>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>My First Page</title>
 
-        <!--<link rel="stylesheet" href="/hf.css">-->
+    <!--<link rel="stylesheet" href="/hf.css">-->
+    <link href="/css/bootstrap5.min.css" rel="stylesheet">
+    <style>
+        #nomenclature {
 
-        <style type="text/css" charset="utf-8">
+        }
+    </style>
+</head>
 
-            html, body, canvas {
-                /*width: 100%;
-                height: 100%;*/
-                padding: 0;
-                margin: 0;
-                /*overflow: hidden;*/
+<body>
 
-            }
-
-            body {
-                font-family: Arial;
-                /*font-family: ubuntu, helvetica, arial;*/
-                /*background-color:#f2f6f9;*/
-                /*background: black;*/
-            }
-
-            #nomenclature  li {
-                background-color: bisque;
-            }
-
-            ul li {
-                width: 90%;
-                background-color: #c7621e;
-                display: flex;
-                /*justify-content: space-around;*/
-                margin-bottom: 20px;
-                padding: 10px;
-            }
-
-            ul li span:first-child{
-                width: 4%;
-            }
-
-            ul li span:last-child {/* remove flex on ul li to works*/
-                float: right;
-                width: 0;
-                width: auto;
-            }
-
-            ul li span{
-                width: 24%;
-            }
-
-            ul li form button{
-                background-color: cornflowerblue;
-                /*width: 24%;*/
-                height: auto;
-            }
-
-            ul li form:hover>button{
-                background-color: aquamarine;
-                /*width: 24%;*/
-            }
-
-            table {
-                border-collapse: collapse;
-                /*border: 2px solid rgb(10, 10, 10);*/
-                letter-spacing: 1px;
-                font-family: sans-serif;
-                font-size: .9rem;
-                position: relative;
-                margin-left: auto;
-                margin-right: auto;
-                width: 340px;
-                background-color: #d49010;
-                border-radius: 10px;
-            }
-
-            td {
-                /*border: 1px solid rgb(250, 50, 100);*/
-                padding: 10px 4px;
-                color: aliceblue;
-                text-align: center;
-            }
-
-            input {
-                color: rgb(15, 17, 19);
-                border: none;
-                border-radius: 3px;
-                height: 30px;
-                width: 90%;
-            }
-
-            input:focus {
-                border: none;
-                outline: none;
-            }
-
-            input::placeholder {
-                color: rgb(143, 178, 200);
-            }
-
-            #valide input {
-                border: none;
-                border-radius: 5px;
-                width: 95%;
-                background: #a84a0a;
-                color: aliceblue;
-            }
-
-            #valide input:hover {
-                cursor: pointer;
-                background: #c7621e;
-            }
-
-        </style>
-    </head>
-
-    <body>
-
-    <!--<header th:replace="fragments/header.html :: headerfrag"></header>-->
-    <div style="background-color: cadetblue">
-        <span>Ceci est la liste des villes</span>
-        <form th:action="@{'/'}">
-            <button type="submit">Retour Acueil</button>
-        </form>
-    </div>
+<!--<header th:replace="fragments/header.html :: headerfrag"></header>-->
+<div style="background-color: cadetblue">
+    <span>Ceci est la liste des villes</span>
+    <form th:action="@{'/'}">
+        <button type="submit">Retour Acueil</button>
+    </form>
+</div>
+<!--<div class="container-md w-50 mx-auto" >equals to this : style="width: 60%;margin-left: auto;margin-right: auto" in Bootstrap Style-->
+    <div class="container-md mx-auto" style="width: 700px">
     <h1>Liste des villes</h1>
     <form th:action="@{'/ville/add'}">
-        <button type="submit">Ajouter</button>
+        <button class="btn btn-primary" type="submit">Ajouter</button>
     </form>
-    <ul id="nomenclature">
+    <!--<ul id="nomenclature">
         <li>
             <span text="Id">Id</span>
             <span text="Ville">Ville</span>
@@ -155,6 +54,37 @@
                     </button>
                 </form>
             </li>
-        </ul>
-    </body>
+        </ul>-->
+    <table class="table table-striped table-hover">
+        <thead style="background-color: #c7621e; color: whitesmoke">
+        <tr>
+            <th scope="col" style="width: 45px">#</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Code Postal</th>
+            <th scope="col" style="width: 220px">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ville : ${lv} ">
+            <td class="align-middle" style="width: 60px" th:text="${ville.id}"></td>
+            <td class="align-middle" th:text="${ville.nom}"></td>
+            <td class="align-middle" th:text="${ville.codepostal}"></td>
+            <td>
+                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+                    <form aria-label="First group" class="btn-group me-2" role="group"
+                          sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
+                        <button class="btn btn-outline-primary" type="submit">Modifier</button>
+                    </form>
+                    <form aria-label="Second group" class="btn-group me-2" href="/patient/delete/1" role="group"
+                          sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/delete/{id}'(id=${ville.id})}">
+                        <button class="btn btn-outline-danger" type="submit">Supprimer</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+</body>
 </html>
