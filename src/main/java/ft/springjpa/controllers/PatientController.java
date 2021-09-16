@@ -88,7 +88,7 @@ public class PatientController {
         }catch( Exception e ){
 
         }
-        return "redirect:/patient/list";
+        return "redirect:/patient/list?success";
     }
 
     //$ pour afficher le messge qui suit

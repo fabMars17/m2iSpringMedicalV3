@@ -5,20 +5,29 @@
 </head>
 
 <body>
-<h1>Formulaire <span th:text="${action}"></span> Ville</h1>
-<hr>
-<form name="patientForm" action="" method="post">
-    <div>
-        <label>Nom : </label>
-        <input th:value="${v.nom}" type="text" name="nom">
-    </div>
+    <h1>Formulaire <span th:text="${action}"></span> Ville</h1>
 
-    <div>
-        <label>Code Postal : </label>
-        <input th:value="${v.codepostal}" type="text" name="codepostal">
-    </div>
+    <main class="container">
+        <div class="h2" th:text="${entete_titre}"></div>
+        <form name="villeForm" method="POST">
+            <div th:fragment="editville" id="vilelFields">
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" th:value="${v?.nom}" minlength="2" required>
+                </div>
 
-    <input type="submit" value="Valider">
-</form>
+                <div class="mb-3">
+                    <label for="cp" class="form-label">Code Postal</label>
+                    <input type="text" class="form-control" id="cp" name="codepostal" placeholder="Code Postal" th:value="${v?.codepostal}" minlength="2" required>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-secondary">Valider</button>
+            <button type="reset" class="btn btn-danger float-end">Annuler</button>
+        </form>
+    </main>
+    <!--<footer th:include="~{ footer :: #footer }"></footer>-->
+   <!-- <footer th:replace="fragments/footer.html :: footerfrag"></footer>-->
 </body>
 </html>

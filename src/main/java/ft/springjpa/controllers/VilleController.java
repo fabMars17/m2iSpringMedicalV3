@@ -40,7 +40,7 @@ public class VilleController {
     public String addGet( Model model ){
         model.addAttribute("v" , new Ville());
         model.addAttribute("action", "ajout");
-        return "add_edit_ville.html";
+        return "add_edit_ville";
     }
 
     //Update add new ville
@@ -51,7 +51,7 @@ public class VilleController {
 
         vs.addVille(nom,cp);
 
-        return "redirect:/ville/list";
+        return "redirect:/ville/list?success";
     }
     //$ pour afficher le messge qui suit
     @GetMapping("/edit/{id}")

@@ -20,71 +20,74 @@
 
 <body>
 
-<!--<header th:replace="fragments/header.html :: headerfrag"></header>-->
-<div style="background-color: cadetblue">
-    <span>Ceci est la liste des villes</span>
-    <form th:action="@{'/'}">
-        <button type="submit">Retour Acueil</button>
-    </form>
-</div>
-<!--<div class="container-md w-50 mx-auto" >equals to this : style="width: 60%;margin-left: auto;margin-right: auto" in Bootstrap Style-->
-    <div class="container-md mx-auto" style="width: 700px">
-    <h1>Liste des villes</h1>
-    <form th:action="@{'/ville/add'}">
-        <button class="btn btn-primary" type="submit">Ajouter</button>
-    </form>
-    <!--<ul id="nomenclature">
-        <li>
-            <span text="Id">Id</span>
-            <span text="Ville">Ville</span>
-            <span text="Code Postal">Code Postal</span>
-        </li>
-    </ul>
-        <ul>
-            <li th:each="ville : ${lv} ">
-                <span th:text="${ville.id}"></span>
-                <span th:text="${ville.nom}"></span>
-                <span sec:authorize="hasRole('ROLE_ADMIN')" th:text="${ville.codepostal}"></span>
-                <form th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
-                    <button type="submit">Modifier</button>
-                </form>
-                <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/delete/{id}'(id=${ville.id})}" >
-                    <button type="submit" class="btn">
-                        Delete
-                    </button>
-                </form>
-            </li>
-        </ul>-->
-    <table class="table table-striped table-hover">
-        <thead style="background-color: #c7621e; color: whitesmoke">
-        <tr>
-            <th scope="col" style="width: 45px">#</th>
-            <th scope="col">Ville</th>
-            <th scope="col">Code Postal</th>
-            <th scope="col" style="width: 220px">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="ville : ${lv} ">
-            <td class="align-middle" style="width: 60px" th:text="${ville.id}"></td>
-            <td class="align-middle" th:text="${ville.nom}"></td>
-            <td class="align-middle" th:text="${ville.codepostal}"></td>
-            <td>
-                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                    <form aria-label="First group" class="btn-group me-2" role="group"
-                          sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
-                        <button class="btn btn-outline-primary" type="submit">Modifier</button>
-                    </form>
-                    <form aria-label="Second group" class="btn-group me-2" href="/patient/delete/1" role="group"
-                          sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/delete/{id}'(id=${ville.id})}">
-                        <button class="btn btn-outline-danger" type="submit">Supprimer</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        </tbody>
+    <!--<header th:replace="fragments/header.html :: headerfrag"></header>-->
+    <div style="background-color: cadetblue">
+        <span>Ceci est la liste des villes</span>
+        <form th:action="@{'/'}">
+            <button type="submit">Retour Acueil</button>
+        </form>
+    </div>
+    <!--<div class="container-md w-50 mx-auto" >equals to this : style="width: 60%;margin-left: auto;margin-right: auto" in Bootstrap Style-->
+    <main class="container-md mx-auto" style="width: 700px">
+        <h1>Liste des villes</h1>
+            <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
 
-    </table>
-</div>
+
+        <table class="table table-striped table-hover">
+            <thead style="background-color: #c7621e; color: whitesmoke">
+            <tr>
+                <th scope="col" style="width: 45px">#</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Code Postal</th>
+                <th scope="col" style="width: 220px">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ville : ${lv} ">
+                <td class="align-middle" style="width: 60px" th:text="${ville.id}"></td>
+                <td class="align-middle" th:text="${ville.nom}"></td>
+                <td class="align-middle" th:text="${ville.codepostal}"></td>
+                <td>
+                    <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+                        <form aria-label="First group" class="btn-group me-2" role="group"
+                              sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/edit/{id}'(id=${ville.id})}">
+                            <button class="btn btn-outline-primary" type="submit">Modifier</button>
+                        </form>
+                        <form aria-label="Second group" class="btn-group me-2" href="/patient/delete/1" role="group"
+                              sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/ville/delete/{id}'(id=${ville.id})}">
+                            <button class="btn btn-outline-danger" type="submit">Supprimer</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </main>
+
+    <!--<footer th:include="~{ footer :: #footer }"></footer>-->
+    <footer th:replace="fragments/footer.html :: footerfrag"></footer>
+    <!-- Modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form  name="villeForm" method="POST" action="/ville/add">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une ville</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div th:replace="add_edit_ville.html :: editville"></div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-secondary" type="submit">Valider</button>
+                        <button class="btn btn-danger float-end" type="reset">Annuler</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
+
 </html>

@@ -125,9 +125,7 @@
 <header th:replace="fragments/header.html :: headerfrag"></header>
 <div style="width: 90%;margin-left: auto;margin-right: auto">
     <h1>Liste des patients</h1>
-    <form th:action="@{'/patient/add'}">
-        <button class="btn btn-primary" type="submit">Ajouter</button>
-    </form>
+        <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
     <!--<form th:action="@{'/logout'}">
         <button type="submit">Deconnection</button>
     </form>-->
@@ -198,5 +196,28 @@
 
     </table>
 </div>
+
+    <footer th:replace="fragments/footer.html :: footerfrag"></footer>
+    <!-- Modal-->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form  name="villeForm" method="POST" action="/patient/add">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une ville</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div th:replace="add_edit.html :: editpatient"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="submit">Valider</button>
+                        <button class="btn btn-danger float-end" type="reset">Annuler</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
