@@ -33,7 +33,7 @@ public class ContentController {
         m.addAttribute("lp",pr.findAll());
         m.addAttribute("lv", vr.findAll());
         //m.addAttribute("user",ur.findAll());
-        return "/fragments/listpart.html :: content1";
+        return "/list.html :: content1";
         //return "/fragments/listpart.html";
     }
 

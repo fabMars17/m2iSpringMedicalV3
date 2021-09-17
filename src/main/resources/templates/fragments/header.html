@@ -8,41 +8,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Page</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/hf.css">
 
 </head>
 
 <body>
-    <header th:fragment="headerfrag">
-        <div id="masthead">
-            <div id="divhead">
+<header th:fragment="headerfrag" id="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org" >
 
-                <div id="headright">
-                    <span>My header : Fragment</span>
-                    <form th:action="@{'/'}">
-                        <button type="submit">Retour Acueil</button>
-                    </form>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4" style="min-height: 96px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MediCom</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/patient/list'}">Patients</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/ville/list'}">Villes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">RDV</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/user/list'}" sec:authorize="hasRole('ROLE_ADMIN')">Utilisateurs</a>
+                    </li>
+
+                    <li class="nav-item">
+
+                    </li>
+
+                </ul>
+
+                <div class="float-end">
+                    <div class="dropdown dropstart">
+                        <button class="border-0 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/img/user_profil.jpg" alt="Photo de profil" class="img-profil rounded-circle" style="max-height: 75px;">
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profileModal"
+                                   th:href="@{'/user/profile/edit/' + ${#authentication.getPrincipal().getUser().getId()}}"
+                            >Gérer mon profil</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+
                 </div>
-
             </div>
-
-
         </div>
+    </nav>
 
+    <div class="container">
+        <div th:if="${param.success}" class="alert alert-success" role="alert">Opération effectuée avec succès</div>
+        <div th:if="${param.error}" th:text="${param.error}" class="alert alert-danger" role="alert">Un problème est survenue !</div>
+    </div>
 
+</header>
 
-
-
-    </header>
-
-    <main>
-        
-
-    </main>
-
-    <footer>
-
-    </footer>
 </body>
 
 </html>
