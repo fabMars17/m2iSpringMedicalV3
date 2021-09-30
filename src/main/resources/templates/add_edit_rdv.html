@@ -9,56 +9,125 @@
 </head>
 
 <body>
-<h1 style="text-align: center">Formulaire <span th:text="${action}"></span> Patient</h1>
+<h1 style="text-align: center">Formulaire <span th:text="${action}"></span>Rdv  Patient</h1>
 <hr>
 <div style="width: 600px;margin: auto">
-    <form action="" method="post" name="patientForm">
+    <form action="" method="post" name="rdvForm">
         <div th:fragment="editpatient" id="patientlFields">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Nom : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" name="nom" placeholder="Martin" th:value="${p?.nom}" type="text">
-                </div>
+                <label class="col-sm-3 col-form-label">Identite : </label>
+                <!--<div class="col-sm-9" name="patient" th:utext="${p.id}">
+                </div>-->
+                <div name="idpatient" placeholder="#"  th:utext="${p?.nom}" type="text"></div>
+                <input class="form-control" name="idpatient" placeholder="Martin" th:value="${p?.id}" type="text">
+            </div>
+
+            <div class="row mb-3 nativeDateTimePicker">
+                <label for="party">Date de rendez-vous:</label>
+                <input type="datetime-local" id="party" name="date">
+                <span class="validity"></span>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Prénom : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" name="prenom" placeholder="Jacque" th:value="${p?.prenom}" type="text">
-                </div>
+                <label for="party">Duree de la consultation</label>
+              <!--<span>
+                <label for="hour">Heure:</label>
+                <select id="hour" name="hour">
+                </select>
+              </span>-->
+                        <span>
+                <label for="minute">Minute:</label>
+                <select id="minute" name="minute">
+                </select>
+              </span>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Email : </label>
-                <div class="col-sm-9">
-                    <input  class="form-control" name="mail" th:value="${p?.email}" type="email" id="email">
-                </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea1" name="type" style="height: 100px"></textarea>
+                <label for="floatingTextarea2">Type de Consultation</label>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Téléphone : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" name="telephone" placeholder="01 02 03 04 05" th:value="${p?.telephone}" type="tel">
-                </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="note" style="height: 200px"></textarea>
+                <label for="floatingTextarea2">Note</label>
             </div>
+                <!--<p class="fallbackLabel">Choose a date and time for your party:</p>
+                <div class="fallbackDateTimePicker">
+                    <div>
+      <span>
+        <label for="day">Day:</label>
+        <select id="day" name="day">
+        </select>
+      </span>
+                        <span>
+        <label for="month">Month:</label>
+        <select id="month" name="month">
+          <option selected>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
+      </span>
+                        <span>
+        <label for="year">Year:</label>
+        <select id="year" name="year">
+        </select>
+      </span>
+                    </div>
+                    <div>
+      <span>
+        <label for="hour">Hour:</label>
+        <select id="hour" name="hour">
+        </select>
+      </span>
+                        <span>
+        <label for="minute">Minute:</label>
+        <select id="minute" name="minute">
+        </select>
+      </span>
+                    </div>
+                </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-3 form-label">Ville : </label>
-                <div class="col-sm-9">
-                    <select class="form-select col-sm-9" name="ville" required>
-                        <option>Veuillez sélectionner</option>
-                        <option th:each="ville : ${lv}"
-                                th:utext="${ville?.nom}"
-                                th:value="${ville?.id}"></option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        </div>-->
         <!--<input type="submit" value="Valider"> any difference from below ?? -->
         <div class="text-center">
             <button class="col-sm-3 btn btn-primary" type="submit">Valider</button>
         </div>
     </form>
 </div>
+<!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local -->
+    <script>
+        const hour = document.getElementById("hour");
+        const min = document.getElementById("minute");
+
+    function populateHours() {
+    // populate the hours <select> with the 24 hours of the day
+        for(var i = 0; i <= 12; i++) {
+        var option = document.createElement('option');
+        option.textContent = (i < 10) ? ("0" + i) : i;
+            hour.appendChild(option);
+        }
+        }
+
+        function populateMinutes() {
+        // populate the minutes <select> with the 60 hours of each minute
+            for(var i = 0; i <= 59; i++) {
+            var option = document.createElement('option');
+            option.textContent = (i < 10) ? ("0" + i) : i;
+                min.appendChild(option);
+            }
+            }
+
+        //populateHours();
+        populateMinutes();
+    </script>
 </body>
 </html>

@@ -50,6 +50,16 @@ public class PatientController {
         return "list.html";
     }
 
+    @GetMapping("/check")
+    public String check(@PathVariable String email) throws Exception {
+        try{
+            ps.checkPatientEmail(email);
+        }catch( Exception e ){
+
+        }
+        return "redirect:/patient/check?email";
+    }
+
     @GetMapping("/add")
     public String addGet( Model model ){
         model.addAttribute("p" , new Patient());
@@ -62,33 +72,16 @@ public class PatientController {
 
     //Update add new patient
     @PostMapping("/add")
-    public String addPost( HttpServletRequest request ){
+    public String addPost( HttpServletRequest request ) throws Exception {
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         String telephone = request.getParameter("telephone");
         String email = request.getParameter("mail");
         String ville = request.getParameter("ville");
 
-        try{
-            /*Patient p = new Patient();
-            p.setNom(nom);
-            p.setPrenom(prenom);
-            p.setEmail(email);
-            p.setTelephone(telephone);
+        ps.addPatient(nom, prenom, email, telephone, Integer.parseInt(ville));
 
-            Ville villeP = new Ville();
-            villeP.setId( Integer.parseInt(  ville ) );
-            p.setVille( villeP );
-            //p.setVille( ville  );
-
-            pr.save( p );*/
-
-            ps.addPatient(nom, prenom, email, telephone, Integer.parseInt(ville));
-
-        }catch( Exception e ){
-
-        }
-        return "redirect:/patient/list?success";
+        return "redirect:/list?success";
     }
 
     //$ pour afficher le messge qui suit

@@ -32,6 +32,10 @@ public class UserDetailsImpl implements UserDetails {
         return user.getRoles();
     }
 
+    public String getLogEmail() {
+        return user.getEmail();
+    }
+
     public User getUser() {
         return user;
     }

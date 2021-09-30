@@ -28,6 +28,15 @@ body {
     text-align: justify;
 }
 
+.day {
+        width: $day_size + px;
+        height: 40px;
+        text-align: center;
+    }
+
+    tbody>tr>td.day:hover {
+        background-color: orange;
+    }
 /*header h1, footer h6 {
     text-align: center;
     color: #ccc;

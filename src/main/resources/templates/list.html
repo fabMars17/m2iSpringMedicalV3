@@ -19,7 +19,7 @@
 <header th:replace="fragments/header.html :: headerfrag"></header>
 <div style="width: 90%;margin-left: auto;margin-right: auto">
     <h1>Liste des patients</h1>
-        <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit" onclick="ProgressForm()">Ajouter</button>
+        <button class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal" type="submit">Ajouter</button>
     <!--<form th:action="@{'/logout'}">
         <button type="submit">Deconnection</button>
     </form>-->
@@ -48,13 +48,9 @@
             <td class="align-middle" th:utext="${patient.ville} ? ${patient.ville.nom}:'Pas de ville'"></td>
             <td>
                 <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                    <form aria-label="First group" class="btn-group me-2" role="group" sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/patient/edit/{id}'(id=${patient.id})}">
-                        <button class="btn btn-outline-primary" type="submit">Modifier</button>
-                    </form>
-                    <form aria-label="Second group" class="btn-group me-2" role="group" href="/patient/delete/1" sec:authorize="hasRole('ROLE_ADMIN')"
-                          th:action="@{'/patient/delete/{id}'(id=${patient.id})}">
+                        <button id="rdv" class="btn btn-outline-success" type="submit">Nouveau Rdv</button>
+                        <button id="edit" class="btn btn-outline-primary" type="submit" th:onclick="|editPatient(${patient.id})|">Modifier</button>
                         <button class="btn btn-outline-danger" type="submit">Supprimer</button>
-                    </form>
                 </div>
             </td>
         </tr>
@@ -90,19 +86,64 @@
     </div>
 
 <script>
-    const em=document.getElementById('exampleModal');
-    const elpb=document.getElementById('pb');
+    const rdv = document.getElementById("rdv");
+    const edit = document.getElementById("edit");
 
-    function ProgressForm() {
+    rdv.addEventListener('click', function() {editRdv(14)},false);
 
-        let inselect=0;
+    function doAjax() {
 
-        elpb.innerText='0/5';
+        console.log("doAjax");
 
-        //let formp=document.getElementById(patientlFields);
-        //formp.getElementsByTagName('input');
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            // instructions of anonymous function
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+            }
+        };
+
+        let emailValue = document.getElementById('email').value;
+        xhr.open("GET", "/patient/check?email="+emailValue, true);
+        xhr.send();
     }
-    ProgressForm();
+
+    var emailInput = document.getElementById("email");
+    emailInput.onblur=doAjax;
+
+    function newRdv( id ){
+        console.log(id);
+    }
+
+    function editPatient(id){
+        fetch('/patient/edit/'+ id, {
+            method: 'GET',
+            redirect: 'follow'
+        })
+        .then( function(response) {
+            if (!response.ok) {
+                window.location = "/patient?error=Problème";
+            }else{
+                window.location = "/patient/edit/"+ id;
+            }
+        } );
+    }
+
+    function editRdv(id){
+        fetch('/rdv/add/'+id, {
+            method: 'GET',
+            redirect: 'follow',
+
+        })
+            .then( function(response) {
+                if (!response.ok) {
+                    window.location = "/patient?error=Problème";
+                }else{
+                    window.location = "/rdv/add/"+id;
+                }
+            } );
+    }
 </script>
 
 </body>

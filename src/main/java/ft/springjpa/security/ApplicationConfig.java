@@ -59,12 +59,12 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
         //auth.inMemoryAuthentication().withUser("admin").password("$2a$10$rjHaRHnUvUdgByDe0.LHD.DCV39xfByRaVGkAQVDM6yIlPfyhktKS").roles("ADMIN");
     }
 
-   /* @Configuration
+    @Configuration
     @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/ws/**")
+            http.cors().and()
+                    .antMatcher("/api/**")
                     .csrf()
                     .disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // On utilise pas les sessions, toute req est déconnectée suite à l'exécution
                     .and().authorizeRequests(authorize -> authorize
@@ -73,20 +73,20 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
                     .httpBasic();
         }
     }
-
     @Configuration
     @Order(2)
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {*/
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure (HttpSecurity http) throws Exception {
             http.formLogin().loginPage("/login").defaultSuccessUrl("/", true);
             //http.formLogin().defaultSuccessUrl("/patient/list");
             http.authorizeRequests().antMatchers("/login", "/css/**").permitAll();
-            http.authorizeRequests().antMatchers("/add/**", "/edit/**").hasRole("ADMIN");
+            http.authorizeRequests().antMatchers("/add/**", "/edit/**", "**/delete/**").hasRole("ADMIN");
             http.authorizeRequests().anyRequest().authenticated();
             http.csrf().disable();
         }
-    /*}*/
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

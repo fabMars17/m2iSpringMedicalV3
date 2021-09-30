@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -37,7 +34,7 @@ public class VilleController {
     }
 
     @GetMapping("/add")
-    public String addGet( Model model ){
+    public String addGet( Model model ) {
         model.addAttribute("v" , new Ville());
         model.addAttribute("action", "ajout");
         return "add_edit_ville";
@@ -45,17 +42,18 @@ public class VilleController {
 
     //Update add new ville
     @PostMapping("/add")
-    public String addPost( HttpServletRequest request ){
+    public String addPost( HttpServletRequest request ) {
         String nom = request.getParameter("nom");
         String cp = request.getParameter("codepostal");
 
-        vs.addVille(nom,cp);
+        vs.add(nom,Integer.parseInt(cp));
 
-        return "redirect:/ville/list?success";
+        return "redirect:/list?success";
     }
+
     //$ pour afficher le messge qui suit
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable String id, Model model){
+    public String edit(@PathVariable String id, Model model) {
 
         model.addAttribute("v", vs.getVille(id));
         //model.addAttribute( "action" , "mise à jour" );
@@ -69,17 +67,18 @@ public class VilleController {
         String nom = request.getParameter("nom");
         String cp = request.getParameter("codepostal");
 
-        vs.updateVille(nom, cp, id);
+        //vs.updateVille(nom, cp, id);
 
         return "redirect:/ville/list";
     }
 
     // Delete
     @Secured("ROLE_ADMIN")
+    @CrossOrigin(origins = "http://localhost:8080")
     @RequestMapping("/delete/{id}")
     public String deletePatient(@PathVariable String id) {
         try {
-            vs.deleteVille(id);
+            vs.delete(Integer.parseInt(id));
         }
         catch( Exception e ){
             System.out.println(e.getMessage());

@@ -1,18 +1,17 @@
 package ft.springjpa.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 public class Rdv {
     private int id;
-    private Timestamp date;
+    private Date date;
     private String type;
     private int duree;
     private String note;
+    private Patient patient;
 
     @Id
     @Column(name = "id")
@@ -26,11 +25,11 @@ public class Rdv {
 
     @Basic
     @Column(name = "date")
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -88,5 +87,15 @@ public class Rdv {
         result = 31 * result + duree;
         result = 31 * result + (note != null ? note.hashCode() : 0);
         return result;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "patient", referencedColumnName = "id", nullable = false)
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

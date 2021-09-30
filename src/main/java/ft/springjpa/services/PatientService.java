@@ -4,6 +4,7 @@ import ft.springjpa.entities.Patient;
 import ft.springjpa.entities.Ville;
 import ft.springjpa.repositories.PatientRepository;
 import ft.springjpa.repositories.VilleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 public class PatientService {
+
     private final PatientRepository pr;
     private final VilleRepository vr;
 
@@ -23,6 +25,15 @@ public class PatientService {
 
     public Iterable<Patient> getList() {
         return pr.findAll();
+    }
+
+    public void checkPatientEmail(String email ) throws Exception {
+        Iterable<Patient> prf = getList();
+        for(Patient p: prf) {
+            if (p.getEmail() == email) {
+                throw new Exception("Email already exist !");
+            }
+        }
     }
 
     private void  checkPatient( String nom, String prenom, String telephone , String email ) throws Exception {
@@ -51,6 +62,7 @@ public class PatientService {
             p.setNom(nom);
             p.setPrenom(prenom);
             p.setEmail(email);
+            //p.setPhoto("");
             p.setTelephone(telephone);
 
             Ville villeP = new Ville();

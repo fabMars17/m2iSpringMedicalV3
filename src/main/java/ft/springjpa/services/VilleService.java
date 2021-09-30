@@ -21,37 +21,28 @@ public class VilleService {
         return vr.findAll();
     }
 
-    public Ville addVille(String nom, String cp){
-
-        try{
-            Ville v = new Ville();
-            v.setNom(nom);
-            v.setCodepostal(Integer.parseInt(cp));
-
-            vr.save( v );
-            return v;
-        } catch( Exception e ){
-
-        }
-
-        return null;
+    public Ville find(int id) {
+        return vr.findById( id ).get();
     }
 
-    public Ville updateVille(String nom, String cp, String id){
+    public Ville add(String nom, int cp){
 
-        Ville v;
-        v=vr.findById(Integer.parseInt(id)).get();
 
-        try{
+            Ville v = new Ville();
             v.setNom(nom);
-            v.setCodepostal(Integer.parseInt(cp));
+            v.setCodepostal(cp);
 
             vr.save( v );
             return v;
-        }catch( Exception e ){
 
-        }
-        return null;
+    }
+
+    public Ville edit(int id, String nom, int cp) {
+        Ville p = vr.findById(id).get();
+        p.setNom(nom);
+        p.setCodepostal(cp);
+        vr.save( p );
+        return p;
     }
 
     public Ville getVille(String id){
@@ -68,8 +59,8 @@ public class VilleService {
         return null;
     }
 
-    public void deleteVille(String id) {
-        vr.deleteById(Integer.parseInt(id));
+    public void delete(int id) {
+        vr.deleteById(id);
 
     }
 }

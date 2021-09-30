@@ -25,23 +25,23 @@
             <thead style="background-color: #c7621e; color: whitesmoke">
             <tr>
                 <th scope="col" style="width: 45px">#</th>
-                <th scope="col">Nom</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Role</th>
-                <th scope="col">Dernier RAZ</th>
+                <th scope="col">date</th>
+                <th scope="col">duree</th>
+                <th scope="col">type</th>
+                <th scope="col">note</th>
                 <th scope="col" style="width: 220px">Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${lu} ">
-                <td class="align-middle" style="width: 60px" th:text="${user.id}"></td>
-                <td class="align-middle" th:text="${user.name}"></td>
-                <td class="align-middle" th:text="${user.email}"></td>
-                <td class="align-middle" th:text="${user.roles}"></td>
-                <td class="align-middle" th:text="${user.userResetpassdate}"></td>
+            <tr th:each="rdv : ${lr} ">
+                <td class="align-middle" style="width: 60px" th:text="${rdv.id}"></td>
+                <td class="align-middle" th:text="${rdv.date}"></td>
+                <td class="align-middle" th:text="${rdv.duree}"></td>
+                <td class="align-middle" th:text="${rdv.type}"></td>
+                <td class="align-middle" th:text="${rdv.note}"></td>
                 <td>
                     <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                        <form aria-label="First group" class="btn-group me-2" role="group"
+                        <!--<form aria-label="First group" class="btn-group me-2" role="group"
                               sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{'/user/edit/{id}'(id=${user.id})}">
                             <button class="btn btn-outline-primary" type="submit">Modifier</button>
                         </form>
@@ -49,7 +49,7 @@
                               sec:authorize="hasRole('ROLE_ADMIN')"
                               th:action="@{'/user/delete/{id}'(id=${user.id})}">
                             <button class="btn btn-outline-danger" type="submit">Supprimer</button>
-                        </form>
+                        </form>-->
                     </div>
                 </td>
             </tr>
